@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Add this import
 import tensorflow as tf
 import numpy as np
 
@@ -26,8 +27,8 @@ modelo = ModeloTFLite(TFLITE_MODEL_PATH)
 
 # 📌 Crear API con Flask
 app = Flask(__name__)
-
-@app.route("/predict", methods=["POST"])
+CORS(app)
+@app.route('/predict/post', methods=['POST'])
 def predict():
     try:
         data = request.get_json()
@@ -45,4 +46,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000)  # Changed port to 5000
